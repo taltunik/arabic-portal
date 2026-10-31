@@ -57,6 +57,11 @@
 
 html, body, #root { min-height: 100%; }
 
+html, body {
+  max-width: 100%;
+  overflow-x: clip;
+}
+
 body {
   margin: 0;
   background: var(--bg-canvas);
@@ -69,15 +74,22 @@ body {
 
 button, input, textarea { font-family: inherit; }
 
-:lang(ar) {
+button { min-height: 44px; }
+
+:lang(ar), [lang="ar"] {
   font-family: "Noto Naskh Arabic", "Amiri", "Noto Sans Hebrew", serif;
+  line-height: 2.2;
 }
 
 .page {
   width: min(860px, 100%);
   margin-inline: auto;
   padding: 28px 22px 72px;
+  padding-top: max(28px, env(safe-area-inset-top));
   padding-bottom: calc(72px + env(safe-area-inset-bottom));
+  padding-left: max(22px, env(safe-area-inset-left));
+  padding-right: max(22px, env(safe-area-inset-right));
+  min-width: 0;
 }
 
 .page-full { width: min(1100px, 100%); }
@@ -127,8 +139,11 @@ h2 {
   font-weight: 700;
 }
 
-.section-body { display: flex; flex-direction: column; gap: 12px; }
+.section { min-width: 0; max-width: 100%; }
+.section-body { display: flex; flex-direction: column; gap: 12px; min-width: 0; max-width: 100%; }
 .section-body > .btn { align-self: flex-start; }
+.rule-head { overflow-wrap: anywhere; }
+.backup-code { max-width: 100%; overflow-x: auto; }
 
 .callout {
   border-radius: 12px;
@@ -212,7 +227,7 @@ h2 {
 
 .divider { border: 0; border-top: 1px solid var(--border); margin: 4px 0; width: 100%; }
 
-.table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
+.table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; min-width: 0; }
 table { width: 100%; border-collapse: collapse; font-size: 15px; }
 th, td {
   text-align: start;
@@ -225,10 +240,66 @@ th { font-size: 13px; color: var(--text-secondary); font-weight: 700; }
 .cell-tone.success { color: var(--text-success-deep); font-weight: 700; }
 .cell-tone.warning { color: var(--text-warning-deep); font-weight: 700; }
 
-@media (max-width: 640px) {
-  .page { padding: 16px 12px 56px; }
+@media (max-width: 800px) {
+  .page {
+    padding: 16px 12px 56px;
+    padding-top: max(16px, env(safe-area-inset-top));
+    padding-bottom: calc(56px + env(safe-area-inset-bottom));
+    padding-left: max(12px, env(safe-area-inset-left));
+    padding-right: max(12px, env(safe-area-inset-right));
+  }
   h1 { font-size: 1.35rem; }
-  h2 { font-size: 1.05rem; }
+  h2 { font-size: 1.08rem; overflow-wrap: anywhere; }
   .section { padding: 12px; border-radius: 14px; }
-  .page-summary { font-size: 0.98rem; }
+  .page-summary { font-size: 1rem; }
+  .section-head { align-items: stretch; }
+  .section-actions .btn, .nav-bar .btn, .topic-pills .btn, .filters .btn { min-height: 44px; }
+  .topic-pills { flex-direction: column; align-items: stretch; }
+  .topic-pills .btn { width: 100%; }
+  .choices {
+    flex-direction: column;
+    align-items: stretch !important;
+  }
+  .choice {
+    width: 100%;
+  }
+  .choice[lang="ar"] { font-size: 1.35rem; }
+  td [lang="ar"] { font-size: 1.3rem; }
+
+  .table-wrap { overflow-x: visible; }
+  .table-wrap table { min-width: 0; }
+  .table-wrap thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+  .table-wrap tr {
+    display: block;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 8px 10px;
+    margin-bottom: 10px;
+    background: var(--bg-subtle);
+  }
+  .table-wrap td {
+    display: block;
+    width: auto;
+    border: 0;
+    padding: 6px 0;
+    text-align: start;
+  }
+  .table-wrap td::before {
+    content: attr(data-label);
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    margin-bottom: 2px;
+  }
 }

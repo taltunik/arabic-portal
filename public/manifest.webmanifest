@@ -1,0 +1,17 @@
+{
+  "name": "פורטל תרגול ערבית – פוסחא",
+  "short_name": "פוסחא",
+  "description": "תרגול ערבית ספרותית: דקדוק, קריאה, ניקוד ואוצר מילים",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "dir": "rtl",
+  "lang": "he",
+  "background_color": "#f4efe6",
+  "theme_color": "#0e5c68",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
