@@ -151,7 +151,7 @@ export function Table(props: {
           {props.rows.map((row, ri) => (
             <tr key={ri}>
               {row.map((cell, ci) => (
-                <td key={ci} style={{ textAlign: props.align?.[ci] ?? "start" }}>
+                <td key={ci} data-label={props.columns[ci] ?? ""} style={{ textAlign: props.align?.[ci] ?? "start" }}>
                   {isToneCell(cell) ? <span className={"cell-tone " + (cell.tone ?? "")}>{cell.text}</span> : cell}
                 </td>
               ))}

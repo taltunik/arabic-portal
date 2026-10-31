@@ -174,7 +174,7 @@ function Chips(props: { items: string[]; onRemove: (i: number) => void }): React
   return (
     <div dir="rtl" style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
       {props.items.map((w: string, i: number) => (
-        <button key={i} type="button" onClick={() => props.onRemove(i)} style={{ padding: "6px 12px", borderRadius: t.radius.full, border: "1px solid " + t.border.default, background: t.fill.accentSubtle, color: t.text.accentDeep, fontFamily: t.font.family, fontSize: t.font.label.fontSize, cursor: "pointer" }}>
+        <button key={i} type="button" lang="ar" onClick={() => props.onRemove(i)} style={{ minHeight: 44, padding: "8px 14px", borderRadius: t.radius.full, border: "1px solid " + t.border.default, background: t.fill.accentSubtle, color: t.text.accentDeep, fontFamily: t.font.family, fontSize: 22, lineHeight: 2.2, cursor: "pointer" }}>
           {w + " ×"}
         </button>
       ))}
@@ -231,7 +231,7 @@ function ReminderView(props: { blocks?: ReminderBlock[]; fallback: string[]; ope
         const isOpen: boolean = tog ? (props.open ?? {})[i] === true : true;
         return (
           <div key={i} style={{ border: "1px solid " + t.border.default, borderRadius: t.radius.lg, background: t.bg.elevated, overflow: "hidden" }}>
-            <button type="button" aria-expanded={isOpen} onClick={() => { if (tog) tog(i); }} style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8, padding: "12px 14px", background: isOpen && tog ? t.fill.accentSubtle : t.bg.elevated, border: "none", cursor: tog ? "pointer" : "default", fontFamily: t.font.family, fontSize: t.font.body1.fontSize, fontWeight: t.weight.semibold, color: t.text.primary, textAlign: "start" }}>
+            <button type="button" className="rule-head" aria-expanded={isOpen} onClick={() => { if (tog) tog(i); }} style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8, minHeight: 48, padding: "14px", background: isOpen && tog ? t.fill.accentSubtle : t.bg.elevated, border: "none", cursor: tog ? "pointer" : "default", fontFamily: t.font.family, fontSize: t.font.body1.fontSize, lineHeight: 1.8, fontWeight: t.weight.semibold, color: t.text.primary, textAlign: "start" }}>
               <span>{b.title}</span>
               {tog ? <span style={{ fontSize: t.font.label.fontSize, color: t.text.accentDeep, whiteSpace: "nowrap" }}>{isOpen ? "סגור ▴" : "פתח ▾"}</span> : null}
             </button>
@@ -255,7 +255,7 @@ function RuleHelp(props: { rules?: ReminderBlock[] }): ReactNode {
   return (
     <div dir="rtl" style={{ display: "flex", flexDirection: "column", gap: 8 }}>
       <div>
-        <button type="button" onClick={() => setOpen(!open)} style={{ padding: "4px 12px", borderRadius: t.radius.full, border: "1px solid " + t.border.default, background: open ? t.fill.accentSubtle : t.bg.base, color: t.text.accentDeep, fontFamily: t.font.family, fontSize: t.font.label.fontSize, cursor: "pointer" }}>
+        <button type="button" onClick={() => setOpen(!open)} style={{ minHeight: 44, padding: "10px 14px", borderRadius: t.radius.full, border: "1px solid " + t.border.default, background: open ? t.fill.accentSubtle : t.bg.base, color: t.text.accentDeep, fontFamily: t.font.family, fontSize: t.font.body2.fontSize, cursor: "pointer" }}>
           {open ? "הסתר את הכלל" : one ? "📖 הצג את הכלל של השאלה" : "📖 הצג את חוקי הנושא"}
         </button>
       </div>
@@ -320,7 +320,7 @@ function QCard(props: { q: Q; index: number; chosen: number | undefined; onAnswe
         </Ar>
       ) : props.q.promptIsArabic ? <Ar>{props.q.prompt}</Ar> : <div style={{ fontSize: t.font.body1.fontSize, color: t.text.primary }}>{props.q.prompt}</div>}
       {props.q.sentence ? <Ar>{props.q.sentence}</Ar> : null}
-      <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+      <div className="choices" style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
         {props.q.options.map((opt: string, oi: number) => {
           const isA: boolean = oi === props.q.answer;
           const isC: boolean = props.chosen === oi;
@@ -331,7 +331,7 @@ function QCard(props: { q: Q; index: number; chosen: number | undefined; onAnswe
           else if (done && isC) { bg = t.fill.dangerSubtle; bd = t.text.danger; col = t.text.dangerDeep; }
           const hasAr: boolean = props.q.promptIsArabic || /[\u0600-\u06FF]/.test(opt);
           return (
-            <button key={oi} type="button" disabled={done} onClick={() => props.onAnswer(oi)} lang={hasAr ? "ar" : "he"} style={{ minHeight: 48, minWidth: 72, padding: "8px 14px", borderRadius: t.radius.md, border: "1.5px solid " + bd, background: bg, color: col, fontFamily: t.font.family, fontSize: hasAr ? 20 : t.font.body1.fontSize, lineHeight: "1.6", cursor: done ? "default" : "pointer", opacity: done && !isA && !isC ? 0.55 : 1, maxWidth: "100%", whiteSpace: "normal", textAlign: "center" }}>
+            <button key={oi} type="button" className="choice" disabled={done} onClick={() => props.onAnswer(oi)} lang={hasAr ? "ar" : "he"} style={{ minHeight: 48, minWidth: 72, padding: "10px 14px", borderRadius: t.radius.md, border: "1.5px solid " + bd, background: bg, color: col, fontFamily: t.font.family, fontSize: hasAr ? 22 : t.font.body1.fontSize, lineHeight: hasAr ? 2.2 : 1.45, cursor: done ? "default" : "pointer", opacity: done && !isA && !isC ? 0.55 : 1, maxWidth: "100%", whiteSpace: "normal", textAlign: "center" }}>
               {opt}
             </button>
           );
@@ -402,8 +402,8 @@ function MultiCard(props: { q: Q; index: number; chosen: number | undefined; onA
       {slots.map((s: MSlot, si: number) => {
         const picked: number | undefined = pick[si];
         return (
-          <div key={si} dir="rtl" style={{ display: "flex", flexWrap: "wrap", gap: 8, alignItems: "center" }}>
-            <span lang="ar" style={{ minWidth: 96, fontSize: 19, fontWeight: t.weight.semibold, color: t.text.accentDeep }}>{String(si + 1) + ". " + s.bare}</span>
+          <div key={si} className="choices" dir="rtl" style={{ display: "flex", flexWrap: "wrap", gap: 8, alignItems: "center" }}>
+            <span lang="ar" style={{ minWidth: 96, fontSize: 22, lineHeight: 2.2, fontWeight: t.weight.semibold, color: t.text.accentDeep }}>{String(si + 1) + ". " + s.bare}</span>
             {s.opts.map((o: string, oi: number) => {
               const shown: boolean = picked !== undefined;
               let bg: string = t.bg.base;
@@ -412,7 +412,7 @@ function MultiCard(props: { q: Q; index: number; chosen: number | undefined; onA
               if (shown && oi === s.ans) { bg = t.fill.successSubtle; bd = t.text.success; col = t.text.successDeep; }
               else if (shown && oi === picked) { bg = t.fill.dangerSubtle; bd = t.text.danger; col = t.text.dangerDeep; }
               return (
-                <button key={oi} type="button" lang="ar" disabled={shown} onClick={() => choose(si, oi)} style={{ minHeight: 44, minWidth: 72, padding: "6px 12px", borderRadius: t.radius.md, border: "1.5px solid " + bd, background: bg, color: col, fontFamily: t.font.family, fontSize: 20, lineHeight: "1.6", cursor: shown ? "default" : "pointer", opacity: shown && oi !== s.ans && oi !== picked ? 0.55 : 1 }}>{o}</button>
+                <button key={oi} type="button" className="choice" lang="ar" disabled={shown} onClick={() => choose(si, oi)} style={{ minHeight: 48, minWidth: 72, padding: "10px 14px", borderRadius: t.radius.md, border: "1.5px solid " + bd, background: bg, color: col, fontFamily: t.font.family, fontSize: 22, lineHeight: 2.2, cursor: shown ? "default" : "pointer", opacity: shown && oi !== s.ans && oi !== picked ? 0.55 : 1 }}>{o}</button>
               );
             })}
           </div>
@@ -446,7 +446,7 @@ function RQCard(props: { q: ReadQ; index: number; chosen: number | undefined; on
     <div style={{ border: "1px solid " + t.border.default, borderRadius: t.radius.lg, padding: 14, background: t.bg.elevated, display: "flex", flexDirection: "column", gap: 10, fontFamily: t.font.family }}>
       <span style={{ color: t.text.tertiary, fontSize: t.font.label.fontSize }}>{"שאלת קריאה " + String(props.index + 1)}</span>
       <div style={{ fontSize: t.font.body1.fontSize, color: t.text.primary }}>{props.q.prompt}</div>
-      <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+      <div className="choices" style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
         {props.q.options.map((opt: string, oi: number) => {
           const isA: boolean = oi === props.q.answer;
           const isC: boolean = props.chosen === oi;
@@ -456,7 +456,7 @@ function RQCard(props: { q: ReadQ; index: number; chosen: number | undefined; on
           if (done && isA) { bg = t.fill.successSubtle; bd = t.text.success; col = t.text.successDeep; }
           else if (done && isC) { bg = t.fill.dangerSubtle; bd = t.text.danger; col = t.text.dangerDeep; }
           return (
-            <button key={oi} type="button" disabled={done} onClick={() => props.onAnswer(oi)} style={{ minHeight: 44, padding: "8px 14px", borderRadius: t.radius.md, border: "1.5px solid " + bd, background: bg, color: col, fontFamily: t.font.family, fontSize: t.font.body1.fontSize, cursor: done ? "default" : "pointer", opacity: done && !isA && !isC ? 0.55 : 1, maxWidth: "100%", whiteSpace: "normal" }}>
+            <button key={oi} type="button" className="choice" disabled={done} onClick={() => props.onAnswer(oi)} style={{ minHeight: 48, padding: "10px 14px", borderRadius: t.radius.md, border: "1.5px solid " + bd, background: bg, color: col, fontFamily: t.font.family, fontSize: t.font.body1.fontSize, lineHeight: 1.5, cursor: done ? "default" : "pointer", opacity: done && !isA && !isC ? 0.55 : 1, maxWidth: "100%", whiteSpace: "normal", textAlign: "center" }}>
               {opt}
             </button>
           );
@@ -501,7 +501,7 @@ function ReadingView(props: { r: Reading }): ReactNode {
     setOpenHe(o); setOpenM({ ...o });
   };
   const small = (label: string, onClick: () => void): ReactNode => (
-    <button type="button" onClick={onClick} style={{ padding: "6px 12px", borderRadius: t.radius.full, border: "1px solid " + t.border.default, background: t.bg.base, color: t.text.primary, fontFamily: t.font.family, fontSize: t.font.label.fontSize, cursor: "pointer" }}>{label}</button>
+    <button type="button" onClick={onClick} style={{ minHeight: 44, padding: "10px 14px", borderRadius: t.radius.full, border: "1px solid " + t.border.default, background: t.bg.base, color: t.text.primary, fontFamily: t.font.family, fontSize: t.font.body2.fontSize, cursor: "pointer" }}>{label}</button>
   );
   return (
     <div dir="rtl" style={{ display: "flex", flexDirection: "column", gap: 16, fontFamily: t.font.family }}>
@@ -545,7 +545,7 @@ function ReadingView(props: { r: Reading }): ReactNode {
               <div style={{ display: "flex", flexDirection: "column", gap: 6, padding: 10, borderRadius: t.radius.md, background: t.bg.subtle, fontSize: t.font.body2.fontSize, lineHeight: "1.75", color: t.text.primary }}>
                 {notes.map((g: MSeg) => (
                   <div key={g.n}>
-                    <span lang="ar" style={{ fontSize: 19, fontWeight: t.weight.semibold, color: t.text.accentDeep }}>{String(g.n) + ". " + g.text}</span>
+                    <span lang="ar" style={{ fontSize: 22, lineHeight: 2.2, fontWeight: t.weight.semibold, color: t.text.accentDeep }}>{String(g.n) + ". " + g.text}</span>
                     <span>{" — " + g.note}</span>
                   </div>
                 ))}
@@ -572,7 +572,7 @@ function ContReadingView(props: { p: ContPassage; idx: number; endings?: boolean
   const answered: number = Object.keys(selfOk).length;
   const okCount: number = Object.keys(selfOk).filter((k: string) => selfOk[Number(k)] === true).length;
   const small = (label: string, onClick: () => void, on?: boolean): ReactNode => (
-    <button type="button" onClick={onClick} style={{ padding: "6px 12px", borderRadius: t.radius.full, border: "1px solid " + (on ? t.text.accent : t.border.default), background: on ? t.fill.accentSubtle : t.bg.base, color: on ? t.text.accentDeep : t.text.primary, fontFamily: t.font.family, fontSize: t.font.label.fontSize, cursor: "pointer" }}>{label}</button>
+    <button type="button" onClick={onClick} style={{ minHeight: 44, padding: "10px 14px", borderRadius: t.radius.full, border: "1px solid " + (on ? t.text.accent : t.border.default), background: on ? t.fill.accentSubtle : t.bg.base, color: on ? t.text.accentDeep : t.text.primary, fontFamily: t.font.family, fontSize: t.font.body2.fontSize, cursor: "pointer" }}>{label}</button>
   );
   return (
     <div dir="rtl" style={{ display: "flex", flexDirection: "column", gap: 12, fontFamily: t.font.family, border: "1px solid " + t.border.default, borderRadius: t.radius.lg, padding: 14, background: t.bg.elevated }}>
@@ -623,7 +623,7 @@ function ContReadingView(props: { p: ContPassage; idx: number; endings?: boolean
                     <div style={{ fontWeight: t.weight.semibold }}>החלטות הניקוד במשפט:</div>
                     {notes.map((g: MSeg) => (
                       <div key={g.n}>
-                        <span lang="ar" style={{ fontSize: 19, fontWeight: t.weight.semibold, color: t.text.accentDeep }}>{String(g.n) + ". " + g.text}</span>
+                        <span lang="ar" style={{ fontSize: 22, lineHeight: 2.2, fontWeight: t.weight.semibold, color: t.text.accentDeep }}>{String(g.n) + ". " + g.text}</span>
                         <span>{" — " + g.note}</span>
                       </div>
                     ))}
@@ -645,7 +645,7 @@ function ContReadingView(props: { p: ContPassage; idx: number; endings?: boolean
       {props.p.gloss.length ? (
         <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
           <div style={{ fontWeight: t.weight.semibold }}>מילון הקטע</div>
-          <Table columns={["מילה / ביטוי", "פירוש"]} align={["start", "start"]} rows={props.p.gloss.map((g: string[]) => [<span lang="ar" dir="rtl" style={{ fontSize: 19 }}>{g[0]}</span>, g[1]])} />
+          <Table columns={["מילה / ביטוי", "פירוש"]} align={["start", "start"]} rows={props.p.gloss.map((g: string[]) => [<span lang="ar" dir="rtl" style={{ fontSize: 22, lineHeight: 2.2 }}>{g[0]}</span>, g[1]])} />
         </div>
       ) : null}
     </div>
@@ -820,7 +820,7 @@ function WordsView(props: { words: WordEntry[]; onChange: (next: WordEntry[]) =>
             <div style={small}>{"כרטיס " + String(fc.i + 1) + " מתוך " + String(fc.ids.length) + " · ידעתי " + String(fc.right) + " · עוד לא " + String(fc.missed.length)}</div>
             <div style={{ padding: 18, borderRadius: t.radius.md, background: t.bg.elevated, border: "1px solid " + t.border.default, textAlign: "center" }}>
               {fc.dir === "ar"
-                ? <div lang="ar" dir="rtl" style={{ fontSize: 30 }}>{fcWord.w}</div>
+                ? <div lang="ar" dir="rtl" style={{ fontSize: 32, lineHeight: 2.2 }}>{fcWord.w}</div>
                 : <div style={{ fontSize: 22 }}>{fcWord.meaning}</div>}
               {fc.show ? (
                 <div style={{ marginTop: 12, paddingTop: 10, borderTop: "1px dashed " + t.border.default }}>
@@ -884,7 +884,7 @@ function WordsView(props: { words: WordEntry[]; onChange: (next: WordEntry[]) =>
           {shown.map((x: WordEntry) => (
             <div key={x.id} style={card}>
               <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "baseline", gap: 8 }}>
-                <span lang="ar" dir="rtl" style={{ fontSize: 24 }}>{x.w}</span>
+                <span lang="ar" dir="rtl" style={{ fontSize: 26, lineHeight: 2.2 }}>{x.w}</span>
                 <span style={small}>{topicName(x.topic) + " · " + (x.date || "–") + (x.known ? " · ✓ ידועה" : "") + (x.right || x.wrong ? " · כרטיסיות ✓" + String(x.right ?? 0) + " ✗" + String(x.wrong ?? 0) : "")}</span>
               </div>
               {editId === x.id ? (
@@ -1117,7 +1117,7 @@ export default function App() {
 
   if (phase === "home") {
     const navBar: ReactNode = (
-      <div dir="rtl" style={{ display: "flex", flexWrap: "wrap", gap: 6, fontFamily: t.font.family }}>
+      <div className="nav-bar" dir="rtl" style={{ display: "flex", flexWrap: "wrap", gap: 6, fontFamily: t.font.family }}>
         <Button label="🏠 בית" variant={section === "" ? "primary" : "quiet"} onClick={() => openSection("")} />
         {SECTIONS.map((s: SectionDef) => (
           <Button key={s.id} label={s.icon + " " + s.titleHe} variant={section === s.id ? "primary" : "quiet"} onClick={() => openSection(s.id)} />
@@ -1131,7 +1131,7 @@ export default function App() {
         {showBackup ? (
           <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
             <div style={{ fontSize: t.font.subtext.fontSize, color: t.text.secondary }}>הקוד כולל את סטטוס התרגול ואת המילים שלא ידעתי. העתיקו אותו ושמרו (או שלחו לעוזר). במכשיר אחר הדביקו אותו בשדה למטה ולחצו ״שחזר״. גם קוד ישן (רק סטטוס תרגול) עדיין עובד.</div>
-            <div dir="ltr" style={{ padding: 10, borderRadius: t.radius.md, border: "1px solid " + t.border.default, background: t.bg.subtle, fontSize: 12, userSelect: "text", wordBreak: "break-all", fontFamily: "monospace" }}>{exportCode}</div>
+            <div className="backup-code" dir="ltr" style={{ padding: 10, borderRadius: t.radius.md, border: "1px solid " + t.border.default, background: t.bg.subtle, fontSize: 16, lineHeight: 1.6, userSelect: "text", wordBreak: "break-all", fontFamily: "monospace" }}>{exportCode}</div>
             <Input label="הדבקת קוד גיבוי" value={backupDraft} onChange={setBackupDraft} placeholder="הדביקו כאן את הקוד" />
             <div><Button label="שחזר מהקוד" onClick={importBackup} /></div>
             {backupMsg ? <div style={{ fontSize: t.font.subtext.fontSize }}>{backupMsg}</div> : null}
@@ -1221,7 +1221,7 @@ export default function App() {
               </div>
             ) : null}
             {looseTopics.length ? (
-              <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+              <div className="topic-pills" style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
                 {looseTopics.map((tp: TopicData) => (
                   <Button key={tp.id} label={practiceIcon(progress[tp.id]) + " " + String(tp.num) + ". " + tp.titleHe.slice(0, 28)} onClick={() => startTopic(tp.id, false)} />
                 ))}
@@ -1241,7 +1241,7 @@ export default function App() {
               <div>⬜ עדיין לא תורגל — אין סבב שמור ואין סימון ידני.</div>
               <div style={{ color: t.text.secondary }}>הסטטוס נשמר אוטומטית כשמסיימים לענות על כל שאלות הסבב (כולל סבב לפי רמה וסבב חיזוק). ״סמן כתורגל״ — לנושא שתרגלתי מחוץ לפורטל, למשל עם דור. ״עודכן״ = מתי התוכן של הנושא נבנה או עודכן, לא מתי תרגלתי.</div>
             </div>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+            <div className="filters" style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
               <Button label={"הכל (" + String(secRows.length) + ")"} variant={pFilter === "all" ? "primary" : "quiet"} onClick={() => setPFilter("all")} />
               <Button label={"תורגלו (" + String(spc.done + spc.review) + ")"} variant={pFilter === "done" ? "primary" : "quiet"} onClick={() => setPFilter("done")} />
               <Button label={"לא תורגלו (" + String(spc.none) + ")"} variant={pFilter === "none" ? "primary" : "quiet"} onClick={() => setPFilter("none")} />
@@ -1309,12 +1309,12 @@ export default function App() {
         </Section>
         {showTables && !isMixed && topic && topic.tables ? topic.tables.map((tb: RTable, ti: number) => (
           <Section key={"tb" + String(ti)} heading={tb.title}>
-            <Table columns={tb.columns} align={tb.columns.map((): "start" => "start")} rows={tb.rows.map((r: string[]) => r.map((c: string) => (/[\u05D0-\u05EA]/.test(c) ? c : <span lang="ar" dir="rtl" style={{ fontSize: 19 }}>{c}</span>)))} />
+            <Table columns={tb.columns} align={tb.columns.map((): "start" => "start")} rows={tb.rows.map((r: string[]) => r.map((c: string) => (/[\u05D0-\u05EA]/.test(c) ? c : <span lang="ar" dir="rtl" style={{ fontSize: 22, lineHeight: 2.2 }}>{c}</span>)))} />
           </Section>
         )) : null}
         {showGloss && !isMixed && topic && topic.gloss && topic.gloss.length ? (
           <Section heading="מילון — מילים וביטויים מהשאלות">
-            <Table columns={["מילה / ביטוי", "פירוש"]} align={["start", "start"]} rows={topic.gloss.map((g: string[]) => [<span lang="ar" dir="rtl" style={{ fontSize: 19 }}>{g[0]}</span>, g[1]])} />
+            <Table columns={["מילה / ביטוי", "פירוש"]} align={["start", "start"]} rows={topic.gloss.map((g: string[]) => [<span lang="ar" dir="rtl" style={{ fontSize: 22, lineHeight: 2.2 }}>{g[0]}</span>, g[1]])} />
           </Section>
         ) : null}
         <Section heading="מוכנים?">
@@ -1388,7 +1388,7 @@ export default function App() {
         </Section>
         {topic.reading && topic.reading.gloss.length ? (
           <Section heading="מילון הקטע">
-            <Table columns={["מילה / ביטוי", "פירוש"]} align={["start", "start"]} rows={topic.reading.gloss.map((g: string[]) => [<span lang="ar" dir="rtl" style={{ fontSize: 19 }}>{g[0]}</span>, g[1]])} />
+            <Table columns={["מילה / ביטוי", "פירוש"]} align={["start", "start"]} rows={topic.reading.gloss.map((g: string[]) => [<span lang="ar" dir="rtl" style={{ fontSize: 22, lineHeight: 2.2 }}>{g[0]}</span>, g[1]])} />
           </Section>
         ) : null}
         <Section heading="שאלות על הקטע">
