@@ -108,17 +108,46 @@ function diff(a, b, path) {
   return null;
 }
 
-const dTopics = diff(oldData.TOPICS, newData.TOPICS, "TOPICS");
-if (dTopics) fail(dTopics);
-for (const key of ["MORE", "SECTIONS", "LESSONS", "TOPIC_SECTION", "PLACEHOLDERS"]) {
+const oldIds = oldData.TOPICS.map((t) => t.id);
+const newById = new Map(newData.TOPICS.map((t) => [t.id, t]));
+for (const oldTopic of oldData.TOPICS) {
+  const got = newById.get(oldTopic.id);
+  if (!got) fail("missing original topic " + oldTopic.id);
+  const d = diff(oldTopic, got, "TOPICS." + oldTopic.id);
+  if (d) fail(d);
+}
+const extraTopics = newData.TOPICS.filter((t) => oldIds.indexOf(t.id) < 0);
+if (extraTopics.length !== 1 || extraTopics[0].id !== "dor-lesson-2") {
+  fail("expected one added topic dor-lesson-2, got " + extraTopics.map((t) => t.id).join(","));
+}
+if (extraTopics[0].questions.length !== 32) fail("dor-lesson-2 questions " + extraTopics[0].questions.length);
+if (!extraTopics[0].readingQs || extraTopics[0].readingQs.length !== 6) fail("dor-lesson-2 reading questions");
+const dorIndex = newData.TOPICS.findIndex((t) => t.id === "dor-vocab");
+if (newData.TOPICS[dorIndex + 1].id !== "dor-lesson-2") fail("dor-lesson-2 must follow dor-vocab in the index");
+
+for (const key of ["MORE", "SECTIONS", "PLACEHOLDERS"]) {
   const d = diff(oldData[key], newData[key], key);
   if (d) fail(d);
 }
+for (const lesson of oldData.LESSONS) {
+  const got = newData.LESSONS.find((l) => l.topicId === lesson.topicId);
+  const d = diff(lesson, got, "LESSONS." + lesson.topicId);
+  if (d) fail(d);
+}
+const lesson2 = newData.LESSONS.find((l) => l.topicId === "dor-lesson-2");
+if (!lesson2 || lesson2.section !== "dor" || lesson2.date !== "03.11.2026") fail("missing Dor lesson 2 entry");
+for (const key of Object.keys(oldData.TOPIC_SECTION)) {
+  if (newData.TOPIC_SECTION[key] !== oldData.TOPIC_SECTION[key]) fail("TOPIC_SECTION changed for " + key);
+}
+if (newData.TOPIC_SECTION["dor-lesson-2"] !== "dor") fail("dor-lesson-2 is not in the Dor section");
 
 const qCount = newData.TOPICS.reduce((n, t) => n + t.questions.length, 0);
 const readCount = newData.TOPICS.reduce((n, t) => n + (t.readingQs ? t.readingQs.length : 0), 0);
 const ids = newData.TOPICS.map((t) => t.id);
 if (new Set(ids).size !== ids.length) fail("duplicate topic ids");
+if (newData.TOPICS.length !== 29) fail("expected 29 topics, got " + newData.TOPICS.length);
+if (qCount !== 400) fail("expected 400 questions, got " + qCount);
+if (readCount !== 152) fail("expected 152 reading questions, got " + readCount);
 if (newData.SECTIONS.length !== 5) fail("expected 5 sections");
 
 const samples = [

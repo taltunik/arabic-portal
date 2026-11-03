@@ -10,6 +10,7 @@ import { topic as kana } from "./topics/06-kana";
 import { topic as passive } from "./topics/11-passive";
 import { topic as tamyiz_hal } from "./topics/25-tamyiz-hal";
 import { topic as dor_vocab } from "./topics/22-dor-vocab";
+import { topic as dor_lesson_2 } from "./topics/29-dor-lesson-2";
 import { topic as an_anna } from "./topics/04-an-anna";
 import { topic as mubtada } from "./topics/07-mubtada";
 import { topic as amr } from "./topics/12-amr";
@@ -42,6 +43,7 @@ export const TOPICS: TopicData[] = [
   passive,
   tamyiz_hal,
   dor_vocab,
+  dor_lesson_2,
   an_anna,
   mubtada,
   amr,
