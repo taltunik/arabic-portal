@@ -8,4 +8,5 @@ export const SECTIONS: SectionDef[] = [
   { id: "reading", titleHe: "קריאה וניקוד", icon: "📖", desc: "קריאה נכונה של טקסט בלי ניקוד, והגייה וניקוד סופי (إِعْرَاب) בתרגול ייעודי.", kind: "topics" },
   { id: "words", titleHe: "המילים שלא ידעתי", icon: "🗂️", desc: "כל המילים שרשמתי בתיבות ״מילים שלא ידעתי״ בכל הנושאים — עם פירוש, כרטיסיות לשינון וייצוא.", kind: "words" },
 ];
-export const TOPIC_SECTION: Record<string, string> = { "dor-vocab": "dor", "college-1": "college", "qiraa": "reading", "nikud": "reading" };
+const TOPIC_SECTION_BASE: Record<string, string> = { "dor-vocab": "dor", "college-1": "college", "qiraa": "reading", "nikud": "reading" };
+export const TOPIC_SECTION: Record<string, string> = { ...TOPIC_SECTION_BASE, "dor-lesson-2": "dor" };
